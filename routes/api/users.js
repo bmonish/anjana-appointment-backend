@@ -8,6 +8,16 @@ const { check, validationResult } = require("express-validator");
 // Bringing in user model
 const User = require("../../models/User");
 
+router.get("/doctors", async (req, res) => {
+  try {
+    const doctors = await User.find({ userType: "doctor" });
+    res.json(doctors);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 router.post(
   "/",
   [
