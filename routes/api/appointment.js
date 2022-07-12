@@ -68,6 +68,26 @@ router.get("/myappointments", auth, async (req, res) => {
   }
 });
 
+router.get("/:appointmentId", auth, async (req, res) => {
+  try {
+    const appointment = await Appointment.findById(req.params.appointmentId)
+      .populate("patient")
+      .populate("doctor");
+
+    if (!appointment) {
+      return res.status(404).json({ msg: "Appointment not found" });
+    }
+
+    res.json(appointment);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Appointment not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
 router.patch("/:appointmentId", auth, async (req, res) => {
   try {
     const { appointmentId } = req.params;
