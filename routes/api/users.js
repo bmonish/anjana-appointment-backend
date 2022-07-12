@@ -14,7 +14,7 @@ router.post(
     check("username", "Username is required").not().isEmpty(),
     check(
       "password",
-      "Please eneter a passowrd with 6 or more characters"
+      "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
