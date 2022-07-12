@@ -46,11 +46,19 @@ router.get("/myappointments", auth, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user.id });
     if (user.userType == "doctor") {
-      const appointments = await Appointment.find({ doctor: req.user.id });
+      const appointments = await Appointment.find({
+        doctor: req.user.id,
+      })
+        .populate("patient")
+        .populate("doctor");
 
       res.json(appointments);
     } else {
-      const appointments = await Appointment.find({ patient: req.user.id });
+      const appointments = await Appointment.find({
+        patient: req.user.id,
+      })
+        .populate("patient")
+        .populate("doctor");
 
       res.json(appointments);
     }
